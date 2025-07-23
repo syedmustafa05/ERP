@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requisitions - ProcureEase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    ProcureEase
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="requisitions.html" class="nav-link active">
+                        <i class="fas fa-file-alt"></i>
+                        Requisitions
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="vendors.html" class="nav-link">
+                        <i class="fas fa-building"></i>
+                        Vendors
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="purchase-orders.html" class="nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        Purchase Orders
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="goods-receipts.html" class="nav-link">
+                        <i class="fas fa-boxes"></i>
+                        Goods Receipts
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="invoices.html" class="nav-link">
+                        <i class="fas fa-file-invoice"></i>
+                        Invoices
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="header-title">Requisitions</h1>
+                
+                <div class="user-dropdown">
+                    <div class="user-avatar">TU</div>
+                    <div class="user-info">
+                        <div class="user-name">Test User</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="fas fa-chevron-down ms-2"></i>
+                    
+                    <div class="dropdown-menu" style="display: none;">
+                        <a href="#" class="dropdown-item" data-action="logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title">Requisitions Management</h3>
+                        <button class="btn btn-primary" onclick="showAddRequisitionModal()">
+                            <i class="fas fa-plus me-2"></i>
+                            Add Requisition
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="requisitions-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Item</th>
+                                        <th>Quantity</th>
+                                        <th>Requested By</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <div class="spinner"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Requisition Modal -->
+    <div class="modal-overlay" id="requisition-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Add Requisition</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="requisition-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="item" class="form-label">Item</label>
+                        <input type="text" id="item" name="item" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="requestedBy" class="form-label">Requested By</label>
+                        <input type="text" id="requestedBy" name="requestedBy" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status" class="form-label">Status</label>
+                        <select id="status" name="status" class="form-control form-select" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" id="date" name="date" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline modal-close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>
+                        Save Requisition
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        class RequisitionsPage {
+            constructor() {
+                this.app = window.ProcureEaseApp;
+                this.requisitions = [];
+                this.editingId = null;
+                this.init();
+            }
+
+            async init() {
+                if (!this.app.currentUser) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                this.app.updateUserInterface();
+                this.bindEvents();
+                await this.loadRequisitions();
+            }
+
+            bindEvents() {
+                // User dropdown
+                const userDropdown = document.querySelector('.user-dropdown');
+                const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+                
+                userDropdown.addEventListener('click', (e) => {
+                    if (!e.target.closest('.dropdown-menu')) {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!userDropdown.contains(e.target)) {
+                        dropdownMenu.style.display = 'none';
+                    }
+                });
+
+                // Form submission
+                document.getElementById('requisition-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleFormSubmit();
+                });
+
+                // Modal events
+                this.app.bindModalEvents();
+
+                // Set default date to today
+                document.getElementById('date').valueAsDate = new Date();
+            }
+
+            async loadRequisitions() {
+                try {
+                    // Using mock data for demo
+                    await this.loadMockRequisitions();
+                } catch (error) {
+                    this.app.showNotification('Failed to load requisitions', 'error');
+                }
+            }
+
+            async loadMockRequisitions() {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                this.requisitions = [
+                    {
+                        id: 1,
+                        item: 'Laptops Dell XPS 13',
+                        quantity: 10,
+                        requestedBy: 'IT Department',
+                        status: 'Approved',
+                        date: '2025-01-18'
+                    },
+                    {
+                        id: 2,
+                        item: 'Office Chairs',
+                        quantity: 25,
+                        requestedBy: 'HR Department',
+                        status: 'Pending',
+                        date: '2025-01-20'
+                    },
+                    {
+                        id: 3,
+                        item: 'Printer Paper A4',
+                        quantity: 100,
+                        requestedBy: 'Admin Department',
+                        status: 'Approved',
+                        date: '2025-01-21'
+                    },
+                    {
+                        id: 4,
+                        item: 'Network Switches',
+                        quantity: 5,
+                        requestedBy: 'IT Department',
+                        status: 'Rejected',
+                        date: '2025-01-22'
+                    }
+                ];
+
+                this.renderTable();
+            }
+
+            renderTable() {
+                const columns = [
+                    { key: 'id', label: 'ID' },
+                    { key: 'item', label: 'Item' },
+                    { key: 'quantity', label: 'Quantity' },
+                    { key: 'requestedBy', label: 'Requested By' },
+                    { 
+                        key: 'status', 
+                        label: 'Status',
+                        render: (value) => `<span class="badge ${this.app.getStatusBadgeClass(value)}">${value}</span>`
+                    },
+                    { 
+                        key: 'date', 
+                        label: 'Date',
+                        render: (value) => this.app.formatDate(value)
+                    },
+                    {
+                        key: 'actions',
+                        label: 'Actions',
+                        render: (value, item) => `
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline" onclick="editRequisition(${item.id})" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline text-danger" onclick="deleteRequisition(${item.id})" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        `
+                    }
+                ];
+
+                this.app.renderTable(this.requisitions, columns, 'requisitions-table');
+            }
+
+            showAddModal() {
+                this.editingId = null;
+                document.getElementById('modal-title').textContent = 'Add Requisition';
+                document.getElementById('requisition-form').reset();
+                document.getElementById('date').valueAsDate = new Date();
+                this.app.showModal('requisition-modal');
+            }
+
+            showEditModal(id) {
+                const requisition = this.requisitions.find(r => r.id === id);
+                if (!requisition) return;
+
+                this.editingId = id;
+                document.getElementById('modal-title').textContent = 'Edit Requisition';
+                
+                document.getElementById('item').value = requisition.item;
+                document.getElementById('quantity').value = requisition.quantity;
+                document.getElementById('requestedBy').value = requisition.requestedBy;
+                document.getElementById('status').value = requisition.status;
+                document.getElementById('date').value = requisition.date;
+                
+                this.app.showModal('requisition-modal');
+            }
+
+            async handleFormSubmit() {
+                const form = document.getElementById('requisition-form');
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                // Validate form
+                const errors = this.app.validateForm(form);
+                if (errors.length > 0) {
+                    this.app.showNotification(errors.join(', '), 'error');
+                    return;
+                }
+
+                try {
+                    if (this.editingId) {
+                        await this.updateRequisition(this.editingId, data);
+                    } else {
+                        await this.createRequisition(data);
+                    }
+                    
+                    this.app.hideModal('requisition-modal');
+                    this.app.showNotification(
+                        `Requisition ${this.editingId ? 'updated' : 'created'} successfully!`, 
+                        'success'
+                    );
+                    
+                    await this.loadRequisitions();
+                } catch (error) {
+                    this.app.showNotification('Failed to save requisition', 'error');
+                }
+            }
+
+            async createRequisition(data) {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const newRequisition = {
+                    id: Math.max(...this.requisitions.map(r => r.id)) + 1,
+                    ...data
+                };
+                this.requisitions.push(newRequisition);
+            }
+
+            async updateRequisition(id, data) {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const index = this.requisitions.findIndex(r => r.id === id);
+                if (index !== -1) {
+                    this.requisitions[index] = { ...this.requisitions[index], ...data };
+                }
+            }
+
+            async deleteRequisition(id) {
+                if (!confirm('Are you sure you want to delete this requisition?')) {
+                    return;
+                }
+
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    this.requisitions = this.requisitions.filter(r => r.id !== id);
+                    this.renderTable();
+                    this.app.showNotification('Requisition deleted successfully!', 'success');
+                } catch (error) {
+                    this.app.showNotification('Failed to delete requisition', 'error');
+                }
+            }
+        }
+
+        // Global functions for button clicks
+        function showAddRequisitionModal() {
+            window.requisitionsPage.showAddModal();
+        }
+
+        function editRequisition(id) {
+            window.requisitionsPage.showEditModal(id);
+        }
+
+        function deleteRequisition(id) {
+            window.requisitionsPage.deleteRequisition(id);
+        }
+
+        // Initialize page
+        window.requisitionsPage = new RequisitionsPage();
+    </script>
+</body>
+</html>
