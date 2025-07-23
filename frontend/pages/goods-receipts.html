@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goods Receipts - ProcureEase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    ProcureEase
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="requisitions.html" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        Requisitions
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="vendors.html" class="nav-link">
+                        <i class="fas fa-building"></i>
+                        Vendors
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="purchase-orders.html" class="nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        Purchase Orders
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="goods-receipts.html" class="nav-link active">
+                        <i class="fas fa-boxes"></i>
+                        Goods Receipts
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="invoices.html" class="nav-link">
+                        <i class="fas fa-file-invoice"></i>
+                        Invoices
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="header-title">Goods Receipts</h1>
+                
+                <div class="user-dropdown">
+                    <div class="user-avatar">TU</div>
+                    <div class="user-info">
+                        <div class="user-name">Test User</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="fas fa-chevron-down ms-2"></i>
+                    
+                    <div class="dropdown-menu" style="display: none;">
+                        <a href="#" class="dropdown-item" data-action="logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="card-title">Goods Receipts Management</h3>
+                        <button class="btn btn-primary" onclick="showAddGoodsReceiptModal()">
+                            <i class="fas fa-plus me-2"></i>
+                            Record Receipt
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="goods-receipts-table">
+                                <thead>
+                                    <tr>
+                                        <th>Receipt ID</th>
+                                        <th>Purchase Order</th>
+                                        <th>Item</th>
+                                        <th>Quantity Received</th>
+                                        <th>Received Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <div class="spinner"></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Goods Receipt Modal -->
+    <div class="modal-overlay" id="goods-receipt-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Record Goods Receipt</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="goods-receipt-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="purchase_order_id" class="form-label">Purchase Order</label>
+                        <select id="purchase_order_id" name="purchase_order_id" class="form-control form-select" required>
+                            <option value="">Select a purchase order...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="item" class="form-label">Item</label>
+                        <input type="text" id="item" name="item" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantity_received" class="form-label">Quantity Received</label>
+                        <input type="number" id="quantity_received" name="quantity_received" class="form-control" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="received_date" class="form-label">Received Date</label>
+                        <input type="date" id="received_date" name="received_date" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline modal-close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>
+                        Save Receipt
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        class GoodsReceiptsPage {
+            constructor() {
+                this.app = window.ProcureEaseApp;
+                this.goodsReceipts = [];
+                this.purchaseOrders = [];
+                this.editingId = null;
+                this.init();
+            }
+
+            async init() {
+                if (!this.app.currentUser) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                this.app.updateUserInterface();
+                this.bindEvents();
+                await this.loadData();
+            }
+
+            bindEvents() {
+                // User dropdown
+                const userDropdown = document.querySelector('.user-dropdown');
+                const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+                
+                userDropdown.addEventListener('click', (e) => {
+                    if (!e.target.closest('.dropdown-menu')) {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!userDropdown.contains(e.target)) {
+                        dropdownMenu.style.display = 'none';
+                    }
+                });
+
+                // Form submission
+                document.getElementById('goods-receipt-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleFormSubmit();
+                });
+
+                // Modal events
+                this.app.bindModalEvents();
+
+                // Set default date to today
+                document.getElementById('received_date').valueAsDate = new Date();
+
+                // Purchase order selection change
+                document.getElementById('purchase_order_id').addEventListener('change', (e) => {
+                    this.onPurchaseOrderChange(e.target.value);
+                });
+            }
+
+            async loadData() {
+                try {
+                    await Promise.all([
+                        this.loadMockGoodsReceipts(),
+                        this.loadMockPurchaseOrders()
+                    ]);
+                    this.populateSelects();
+                } catch (error) {
+                    this.app.showNotification('Failed to load data', 'error');
+                }
+            }
+
+            async loadMockGoodsReceipts() {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                this.goodsReceipts = [
+                    {
+                        id: 1,
+                        purchase_order_id: 1,
+                        item: 'Laptops Dell XPS 13',
+                        quantity_received: 10,
+                        received_date: '2025-01-20',
+                        purchase_order: { 
+                            id: 1, 
+                            requisition: { item: 'Laptops Dell XPS 13' },
+                            vendor: { name: 'TechSupply Corp' }
+                        }
+                    },
+                    {
+                        id: 2,
+                        purchase_order_id: 3,
+                        item: 'Laptops Dell XPS 13',
+                        quantity_received: 8,
+                        received_date: '2025-01-21',
+                        purchase_order: { 
+                            id: 3, 
+                            requisition: { item: 'Laptops Dell XPS 13' },
+                            vendor: { name: 'Global Suppliers Inc' }
+                        }
+                    }
+                ];
+
+                this.renderTable();
+            }
+
+            async loadMockPurchaseOrders() {
+                this.purchaseOrders = [
+                    {
+                        id: 1,
+                        requisition: { item: 'Laptops Dell XPS 13' },
+                        vendor: { name: 'TechSupply Corp' },
+                        status: 'Issued',
+                        total_amount: 15000.00
+                    },
+                    {
+                        id: 2,
+                        requisition: { item: 'Printer Paper A4' },
+                        vendor: { name: 'OfficeMax Solutions' },
+                        status: 'Pending Approval',
+                        total_amount: 2500.00
+                    },
+                    {
+                        id: 3,
+                        requisition: { item: 'Laptops Dell XPS 13' },
+                        vendor: { name: 'Global Suppliers Inc' },
+                        status: 'Completed',
+                        total_amount: 8750.00
+                    }
+                ];
+            }
+
+            populateSelects() {
+                // Populate purchase orders (only issued or completed ones)
+                const orderSelect = document.getElementById('purchase_order_id');
+                orderSelect.innerHTML = '<option value="">Select a purchase order...</option>';
+                this.purchaseOrders
+                    .filter(order => ['Issued', 'Completed'].includes(order.status))
+                    .forEach(order => {
+                        const option = document.createElement('option');
+                        option.value = order.id;
+                        option.textContent = `PO #${order.id} - ${order.requisition.item} (${order.vendor.name})`;
+                        option.dataset.item = order.requisition.item;
+                        orderSelect.appendChild(option);
+                    });
+            }
+
+            onPurchaseOrderChange(orderId) {
+                if (!orderId) {
+                    document.getElementById('item').value = '';
+                    return;
+                }
+
+                const order = this.purchaseOrders.find(o => o.id === parseInt(orderId));
+                if (order) {
+                    document.getElementById('item').value = order.requisition.item;
+                }
+            }
+
+            renderTable() {
+                const columns = [
+                    { key: 'id', label: 'Receipt ID', render: (value) => `#${value}` },
+                    { 
+                        key: 'purchase_order', 
+                        label: 'Purchase Order',
+                        render: (value, item) => `PO #${value.id} - ${value.vendor.name}`
+                    },
+                    { key: 'item', label: 'Item' },
+                    { key: 'quantity_received', label: 'Quantity Received' },
+                    { 
+                        key: 'received_date', 
+                        label: 'Received Date',
+                        render: (value) => this.app.formatDate(value)
+                    },
+                    {
+                        key: 'actions',
+                        label: 'Actions',
+                        render: (value, item) => `
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline" onclick="editGoodsReceipt(${item.id})" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline text-danger" onclick="deleteGoodsReceipt(${item.id})" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        `
+                    }
+                ];
+
+                this.app.renderTable(this.goodsReceipts, columns, 'goods-receipts-table');
+            }
+
+            showAddModal() {
+                this.editingId = null;
+                document.getElementById('modal-title').textContent = 'Record Goods Receipt';
+                document.getElementById('goods-receipt-form').reset();
+                document.getElementById('received_date').valueAsDate = new Date();
+                this.populateSelects();
+                this.app.showModal('goods-receipt-modal');
+            }
+
+            showEditModal(id) {
+                const receipt = this.goodsReceipts.find(r => r.id === id);
+                if (!receipt) return;
+
+                this.editingId = id;
+                document.getElementById('modal-title').textContent = 'Edit Goods Receipt';
+                
+                document.getElementById('purchase_order_id').value = receipt.purchase_order_id;
+                document.getElementById('item').value = receipt.item;
+                document.getElementById('quantity_received').value = receipt.quantity_received;
+                document.getElementById('received_date').value = receipt.received_date;
+                
+                this.populateSelects();
+                this.app.showModal('goods-receipt-modal');
+            }
+
+            async handleFormSubmit() {
+                const form = document.getElementById('goods-receipt-form');
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                // Convert string values to appropriate types
+                data.purchase_order_id = parseInt(data.purchase_order_id);
+                data.quantity_received = parseInt(data.quantity_received);
+
+                // Validate form
+                const errors = this.app.validateForm(form);
+                if (errors.length > 0) {
+                    this.app.showNotification(errors.join(', '), 'error');
+                    return;
+                }
+
+                try {
+                    if (this.editingId) {
+                        await this.updateGoodsReceipt(this.editingId, data);
+                    } else {
+                        await this.createGoodsReceipt(data);
+                    }
+                    
+                    this.app.hideModal('goods-receipt-modal');
+                    this.app.showNotification(
+                        `Goods Receipt ${this.editingId ? 'updated' : 'recorded'} successfully!`, 
+                        'success'
+                    );
+                    
+                    await this.loadMockGoodsReceipts();
+                } catch (error) {
+                    this.app.showNotification('Failed to save goods receipt', 'error');
+                }
+            }
+
+            async createGoodsReceipt(data) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Find purchase order details
+                const purchaseOrder = this.purchaseOrders.find(o => o.id === data.purchase_order_id);
+                
+                const newReceipt = {
+                    id: Math.max(...this.goodsReceipts.map(r => r.id)) + 1,
+                    ...data,
+                    purchase_order: {
+                        id: purchaseOrder.id,
+                        requisition: purchaseOrder.requisition,
+                        vendor: purchaseOrder.vendor
+                    }
+                };
+                this.goodsReceipts.push(newReceipt);
+            }
+
+            async updateGoodsReceipt(id, data) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const index = this.goodsReceipts.findIndex(r => r.id === id);
+                if (index !== -1) {
+                    // Find purchase order details
+                    const purchaseOrder = this.purchaseOrders.find(o => o.id === data.purchase_order_id);
+                    
+                    this.goodsReceipts[index] = { 
+                        ...this.goodsReceipts[index], 
+                        ...data,
+                        purchase_order: {
+                            id: purchaseOrder.id,
+                            requisition: purchaseOrder.requisition,
+                            vendor: purchaseOrder.vendor
+                        }
+                    };
+                }
+            }
+
+            async deleteGoodsReceipt(id) {
+                if (!confirm('Are you sure you want to delete this goods receipt?')) {
+                    return;
+                }
+
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    this.goodsReceipts = this.goodsReceipts.filter(r => r.id !== id);
+                    this.renderTable();
+                    this.app.showNotification('Goods Receipt deleted successfully!', 'success');
+                } catch (error) {
+                    this.app.showNotification('Failed to delete goods receipt', 'error');
+                }
+            }
+        }
+
+        // Global functions for button clicks
+        function showAddGoodsReceiptModal() {
+            window.goodsReceiptsPage.showAddModal();
+        }
+
+        function editGoodsReceipt(id) {
+            window.goodsReceiptsPage.showEditModal(id);
+        }
+
+        function deleteGoodsReceipt(id) {
+            window.goodsReceiptsPage.deleteGoodsReceipt(id);
+        }
+
+        // Initialize page
+        window.goodsReceiptsPage = new GoodsReceiptsPage();
+    </script>
+</body>
+</html>

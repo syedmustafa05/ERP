@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create test user
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::updateOrCreate(
+            ['email' => 'test@example.com'],
+            ['name' => 'Test User']
+        );
 
         // Create sample vendors
         $vendors = [
@@ -46,7 +46,10 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($vendors as $vendorData) {
-            Vendor::create($vendorData);
+            Vendor::updateOrCreate(
+                ['email' => $vendorData['email']],
+                $vendorData
+            );
         }
 
         // Create sample requisitions
