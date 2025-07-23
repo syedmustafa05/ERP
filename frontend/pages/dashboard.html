@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ProcureEase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    ProcureEase
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="dashboard.html" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="requisitions.html" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        Requisitions
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="vendors.html" class="nav-link">
+                        <i class="fas fa-building"></i>
+                        Vendors
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="purchase-orders.html" class="nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        Purchase Orders
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="goods-receipts.html" class="nav-link">
+                        <i class="fas fa-boxes"></i>
+                        Goods Receipts
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="invoices.html" class="nav-link">
+                        <i class="fas fa-file-invoice"></i>
+                        Invoices
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="header-title">Dashboard</h1>
+                
+                <div class="user-dropdown">
+                    <div class="user-avatar">TU</div>
+                    <div class="user-info">
+                        <div class="user-name">Test User</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="fas fa-chevron-down ms-2"></i>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu" style="display: none;">
+                        <a href="#" class="dropdown-item" data-action="logout">
+                            <i class="fas fa-sign-out-alt me-2"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Statistics Cards -->
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Total Requisitions</div>
+                        <div class="stat-value" id="requisitions-count">0</div>
+                        <div class="stat-change">View all requisitions</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">Active Vendors</div>
+                        <div class="stat-value" id="vendors-count">0</div>
+                        <div class="stat-change">Manage vendors</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">Purchase Orders</div>
+                        <div class="stat-value" id="purchase-orders-count">0</div>
+                        <div class="stat-change">Track orders</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">Pending Invoices</div>
+                        <div class="stat-value" id="pending-invoices-count">0</div>
+                        <div class="stat-change">Process payments</div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Recent Requisitions</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="recent-requisitions-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Quantity</th>
+                                                <th>Requested By</th>
+                                                <th>Status</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="5" class="text-center">
+                                                    <div class="spinner"></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Pending Purchase Orders</h3>
+                            </div>
+                            <div class="card-body">
+                                <div id="pending-orders-list">
+                                    <div class="text-center">
+                                        <div class="spinner"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3 class="card-title">Quick Actions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a href="requisitions.html" class="btn btn-primary w-100 mb-2">
+                                    <i class="fas fa-plus me-2"></i>
+                                    New Requisition
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="vendors.html" class="btn btn-secondary w-100 mb-2">
+                                    <i class="fas fa-building me-2"></i>
+                                    Add Vendor
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="purchase-orders.html" class="btn btn-outline w-100 mb-2">
+                                    <i class="fas fa-shopping-bag me-2"></i>
+                                    Create Order
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="goods-receipts.html" class="btn btn-outline w-100 mb-2">
+                                    <i class="fas fa-boxes me-2"></i>
+                                    Record Receipt
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        // Dashboard specific functionality
+        class Dashboard {
+            constructor() {
+                this.app = window.ProcureEaseApp;
+                this.init();
+            }
+
+            async init() {
+                // Check authentication
+                if (!this.app.currentUser) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                this.app.updateUserInterface();
+                this.bindEvents();
+                await this.loadDashboardData();
+            }
+
+            bindEvents() {
+                // User dropdown toggle
+                const userDropdown = document.querySelector('.user-dropdown');
+                const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+                
+                userDropdown.addEventListener('click', (e) => {
+                    if (!e.target.closest('.dropdown-menu')) {
+                        dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
+                    }
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!userDropdown.contains(e.target)) {
+                        dropdownMenu.style.display = 'none';
+                    }
+                });
+
+                // Modal events
+                this.app.bindModalEvents();
+            }
+
+            async loadDashboardData() {
+                try {
+                    // Since we're using mock data, let's simulate the dashboard data
+                    await this.loadMockDashboardData();
+                } catch (error) {
+                    console.error('Failed to load dashboard data:', error);
+                    this.app.showNotification('Failed to load dashboard data', 'error');
+                }
+            }
+
+            async loadMockDashboardData() {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Mock dashboard data
+                const dashboardData = {
+                    requisitions_count: 4,
+                    vendors_count: 3,
+                    purchase_orders_count: 2,
+                    invoices_count: 2,
+                    recent_requisitions: [
+                        {
+                            id: 1,
+                            item: 'Laptops Dell XPS 13',
+                            quantity: 10,
+                            requestedBy: 'IT Department',
+                            status: 'Approved',
+                            date: '2025-01-18'
+                        },
+                        {
+                            id: 2,
+                            item: 'Office Chairs',
+                            quantity: 25,
+                            requestedBy: 'HR Department',
+                            status: 'Pending',
+                            date: '2025-01-20'
+                        },
+                        {
+                            id: 3,
+                            item: 'Printer Paper A4',
+                            quantity: 100,
+                            requestedBy: 'Admin Department',
+                            status: 'Approved',
+                            date: '2025-01-21'
+                        }
+                    ],
+                    pending_purchase_orders: [
+                        {
+                            id: 1,
+                            total_amount: 15000,
+                            status: 'Pending Approval',
+                            order_date: '2025-01-19'
+                        },
+                        {
+                            id: 2,
+                            total_amount: 2500,
+                            status: 'Pending Approval',
+                            order_date: '2025-01-20'
+                        }
+                    ]
+                };
+
+                this.updateStatistics(dashboardData);
+                this.updateRecentRequisitions(dashboardData.recent_requisitions);
+                this.updatePendingOrders(dashboardData.pending_purchase_orders);
+            }
+
+            updateStatistics(data) {
+                document.getElementById('requisitions-count').textContent = data.requisitions_count;
+                document.getElementById('vendors-count').textContent = data.vendors_count;
+                document.getElementById('purchase-orders-count').textContent = data.purchase_orders_count;
+                document.getElementById('pending-invoices-count').textContent = data.invoices_count;
+            }
+
+            updateRecentRequisitions(requisitions) {
+                const tbody = document.querySelector('#recent-requisitions-table tbody');
+                tbody.innerHTML = '';
+
+                if (requisitions.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No recent requisitions</td></tr>';
+                    return;
+                }
+
+                requisitions.forEach(req => {
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${req.item}</td>
+                        <td>${req.quantity}</td>
+                        <td>${req.requestedBy}</td>
+                        <td><span class="badge ${this.app.getStatusBadgeClass(req.status)}">${req.status}</span></td>
+                        <td>${this.app.formatDate(req.date)}</td>
+                    `;
+                });
+            }
+
+            updatePendingOrders(orders) {
+                const container = document.getElementById('pending-orders-list');
+                
+                if (orders.length === 0) {
+                    container.innerHTML = '<p class="text-muted text-center">No pending orders</p>';
+                    return;
+                }
+
+                container.innerHTML = orders.map(order => `
+                    <div class="d-flex justify-content-between align-items-center mb-3 p-3" style="background-color: var(--bg-light); border-radius: var(--radius-md);">
+                        <div>
+                            <div class="fw-semibold">Order #${order.id}</div>
+                            <div class="text-muted small">${this.app.formatDate(order.order_date)}</div>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-semibold">${this.app.formatCurrency(order.total_amount)}</div>
+                            <span class="badge ${this.app.getStatusBadgeClass(order.status)}">${order.status}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Initialize dashboard
+        new Dashboard();
+    </script>
+</body>
+</html>
