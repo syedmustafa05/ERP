@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ProcureEase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-shopping-cart"></i>
+                    ProcureEase
+                </a>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="index.html" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="pages/requisitions.html" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        Requisitions
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="pages/vendors.html" class="nav-link">
+                        <i class="fas fa-building"></i>
+                        Vendors
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="pages/purchase-orders.html" class="nav-link">
+                        <i class="fas fa-shopping-bag"></i>
+                        Purchase Orders
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="pages/goods-receipts.html" class="nav-link">
+                        <i class="fas fa-boxes"></i>
+                        Goods Receipts
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="pages/invoices.html" class="nav-link">
+                        <i class="fas fa-file-invoice"></i>
+                        Invoices
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="header-title">Dashboard</h1>
+                
+                <div class="user-dropdown">
+                    <div class="user-avatar">TU</div>
+                    <div class="user-info">
+                        <div class="user-name">Test User</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="fas fa-chevron-down ms-2"></i>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div id="loading" class="text-center">
+                    <div class="spinner"></div>
+                </div>
+                
+                <div id="dashboard-content" class="hidden">
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #dbeafe; color: #1e40af;">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-value" id="requisitions-count">0</div>
+                            <div class="stat-label">Total Requisitions</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #dcfce7; color: #166534;">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="stat-value" id="vendors-count">0</div>
+                            <div class="stat-label">Active Vendors</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #fef3c7; color: #92400e;">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="stat-value" id="orders-count">0</div>
+                            <div class="stat-label">Purchase Orders</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background-color: #fee2e2; color: #991b1b;">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="stat-value" id="total-value">$0</div>
+                            <div class="stat-label">Total Orders Value</div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Cards -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Recent Requisitions</h5>
+                                </div>
+                                <div class="card-body" id="recent-requisitions">
+                                    <!-- Dynamic content will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Key Metrics</h5>
+                                </div>
+                                <div class="card-body" id="key-metrics">
+                                    <!-- Dynamic content will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                const data = await app.makeRequest('dashboard');
+                
+                // Update statistics
+                document.getElementById('requisitions-count').textContent = data.requisitions_count || 0;
+                document.getElementById('vendors-count').textContent = data.vendors_count || 0;
+                document.getElementById('orders-count').textContent = data.purchase_orders_count || 0;
+                document.getElementById('total-value').textContent = app.formatCurrency(data.total_orders_value || 0);
+                
+                // Update recent requisitions
+                const recentRequisitions = document.getElementById('recent-requisitions');
+                if (data.recent_requisitions && data.recent_requisitions.length > 0) {
+                    recentRequisitions.innerHTML = data.recent_requisitions.map(req => `
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <strong>${req.item}</strong><br>
+                                <small class="text-muted">Qty: ${req.quantity} | ${req.requestedBy}</small>
+                            </div>
+                            <span class="badge badge-${app.getStatusClass(req.status)}">${req.status}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    recentRequisitions.innerHTML = '<p class="text-muted">No recent requisitions</p>';
+                }
+                
+                // Update key metrics
+                const keyMetrics = document.getElementById('key-metrics');
+                keyMetrics.innerHTML = `
+                    <div class="mb-3">
+                        <strong>Pending Approvals:</strong> ${data.pending_approvals || 0}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Goods Receipts:</strong> ${data.goods_receipts_count || 0}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Invoices:</strong> ${data.invoices_count || 0}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Overdue Invoices:</strong> ${data.overdue_invoices || 0}
+                    </div>
+                `;
+                
+                // Show content and hide loading
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('dashboard-content').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                document.getElementById('loading').innerHTML = '<div class="text-danger text-center">Error loading dashboard data</div>';
+            }
+        }
+
+        // Load dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadDashboard, 500); // Small delay to ensure app is initialized
+        });
+    </script>
+</body>
+</html>
