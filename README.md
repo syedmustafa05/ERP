@@ -1,311 +1,296 @@
-# ProcureEase - Complete Multi-Page Procurement Management System
+# ProcureEase - Complete ERP Procurement Management System
 
-A professional, multi-page procurement management application with separate backend API and frontend interface, built with PHP, SQLite, and modern web technologies.
+A full-stack Enterprise Resource Planning (ERP) system focused on procurement management, built with Laravel backend and vanilla JavaScript frontend.
 
 ## 🚀 Features
 
-- **Complete Backend API** - RESTful PHP API with SQLite database
-- **Multi-Page Frontend** - Separate HTML pages for each module
-- **Professional UI** - Modern responsive design with Bootstrap 5
-- **Real-time Data** - Dynamic loading with JavaScript
-- **Complete Procurement Workflow** - From requisitions to invoices
+### Backend (Laravel)
+- **RESTful API** with full CRUD operations
+- **Database Models**: Requisitions, Vendors, Purchase Orders, Goods Receipts, Invoices
+- **SQLite Database** for easy setup and portability
+- **Eloquent Relationships** between all entities
+- **Input Validation** and error handling
+- **JSON API responses** with consistent structure
 
-## 📋 Project Structure
+### Frontend (Vanilla JavaScript + Bootstrap 5)
+- **Modern UI Design** with professional theme
+- **Responsive Layout** that works on all devices
+- **Authentication System** with login/logout functionality
+- **Interactive Dashboard** with real-time statistics
+- **CRUD Operations** for all entities
+- **Custom Styling** with Inter font and professional color scheme
+
+## 📁 Project Structure
 
 ```
-procure-ease/
-├── backend/
-│   └── api.php                 # Complete RESTful API
-├── frontend/
-│   ├── index.html              # Dashboard (Main page)
-│   ├── css/
-│   │   └── style.css           # Main stylesheet
-│   ├── js/
-│   │   └── app.js              # JavaScript application logic
-│   └── pages/
-│       ├── requisitions.html   # Requisitions management
-│       ├── vendors.html        # Vendor management
-│       ├── purchase-orders.html # Purchase orders
-│       ├── goods-receipts.html # Goods receipts
-│       └── invoices.html       # Invoice management
-└── README.md
+/workspace/
+├── procure-ease-laravel/          # Laravel Backend
+│   ├── app/
+│   │   ├── Models/                # Eloquent Models
+│   │   └── Http/Controllers/API/  # API Controllers
+│   ├── database/
+│   │   └── migrations/            # Database Migrations
+│   ├── routes/
+│   │   └── api.php               # API Routes
+│   └── ...
+└── procure-ease-frontend/         # Frontend
+    ├── css/
+    │   └── style.css             # Custom Styling
+    ├── js/
+    │   ├── auth.js               # Authentication Logic
+    │   └── dashboard.js          # Dashboard Functionality
+    ├── login.html                # Login Page
+    ├── dashboard.html            # Main Dashboard
+    └── ...
 ```
-
-## 📱 Application Pages
-
-### **Dashboard (`index.html`)**
-- Overview with key metrics and statistics
-- Recent requisitions display
-- Real-time data cards
-- Navigation hub to all modules
-
-### **Requisitions (`pages/requisitions.html`)**
-- Create, edit, and manage purchase requisitions
-- Status tracking (Pending, Approved, Rejected)
-- Priority levels and approval workflows
-- Detailed item specifications
-
-### **Vendors (`pages/vendors.html`)**
-- Vendor database management
-- Contact information and ratings
-- Active/inactive status tracking
-- Performance metrics
-
-### **Purchase Orders (`pages/purchase-orders.html`)**
-- Convert requisitions to purchase orders
-- Vendor assignment and order tracking
-- Amount and delivery date management
-- Status monitoring
-
-### **Goods Receipts (`pages/goods-receipts.html`)**
-- Record incoming deliveries
-- Quality control and condition tracking
-- Quantity verification
-- Receipt documentation
-
-### **Invoices (`pages/invoices.html`)**
-- Invoice creation and management
-- Payment tracking and status
-- Due date monitoring
-- Payment method recording
 
 ## 🛠 Installation & Setup
 
 ### Prerequisites
-- **PHP 7.4+** with PDO SQLite extension
-- **Web Server** (Apache, Nginx, or PHP built-in server)
-- **Modern Browser** (Chrome, Firefox, Safari, Edge)
+- PHP 8.4+
+- Composer
+- SQLite support for PHP
+- Python 3 (for frontend server)
 
-### Quick Start
+### Backend Setup
 
-1. **Clone/Download the project**
+1. **Navigate to Laravel directory:**
    ```bash
-   # Download or clone to your desired location
-   cd /path/to/procure-ease
+   cd /workspace/procure-ease-laravel
    ```
 
-2. **Start the PHP Server**
+2. **Install dependencies:**
    ```bash
-   # Navigate to frontend directory
-   cd frontend
-   
-   # Start PHP built-in server
-   php -S localhost:8000
+   composer install
    ```
 
-3. **Access the Application**
-   - Open browser to `http://localhost:8000`
-   - Start with the Dashboard
-   - Navigate between pages using the sidebar
+3. **Set up environment:**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-### Database Setup
-- **Automatic Creation**: Database and tables are created automatically on first API call
-- **Sample Data**: Pre-loaded with realistic sample data
-- **Location**: `backend/procure_ease.db` (SQLite file)
+4. **Run migrations:**
+   ```bash
+   php artisan migrate
+   ```
 
-## 🔌 API Endpoints
+5. **Start Laravel server:**
+   ```bash
+   php artisan serve --host=0.0.0.0 --port=8000
+   ```
 
-The backend API provides complete RESTful endpoints:
+### Frontend Setup
 
-### Dashboard
-- `GET /backend/api.php?path=dashboard` - Get dashboard statistics
+1. **Navigate to frontend directory:**
+   ```bash
+   cd /workspace/procure-ease-frontend
+   ```
 
-### Requisitions
-- `GET /backend/api.php?path=requisitions` - List all requisitions
-- `GET /backend/api.php?path=requisitions/{id}` - Get specific requisition
-- `POST /backend/api.php?path=requisitions` - Create new requisition
-- `PUT /backend/api.php?path=requisitions/{id}` - Update requisition
-- `DELETE /backend/api.php?path=requisitions/{id}` - Delete requisition
+2. **Start HTTP server:**
+   ```bash
+   python3 -m http.server 3000
+   ```
 
-### Vendors
-- `GET /backend/api.php?path=vendors` - List all vendors
-- `GET /backend/api.php?path=vendors/{id}` - Get specific vendor
-- `POST /backend/api.php?path=vendors` - Create new vendor
-- `PUT /backend/api.php?path=vendors/{id}` - Update vendor
-- `DELETE /backend/api.php?path=vendors/{id}` - Delete vendor
+## 🎯 Usage
 
-### Purchase Orders
-- `GET /backend/api.php?path=purchase-orders` - List all purchase orders
-- `GET /backend/api.php?path=purchase-orders/{id}` - Get specific order
-- `POST /backend/api.php?path=purchase-orders` - Create new order
-- `PUT /backend/api.php?path=purchase-orders/{id}` - Update order
-- `DELETE /backend/api.php?path=purchase-orders/{id}` - Delete order
+### Accessing the Application
 
-### Goods Receipts
-- `GET /backend/api.php?path=goods-receipts` - List all receipts
-- `GET /backend/api.php?path=goods-receipts/{id}` - Get specific receipt
-- `POST /backend/api.php?path=goods-receipts` - Create new receipt
-- `PUT /backend/api.php?path=goods-receipts/{id}` - Update receipt
-- `DELETE /backend/api.php?path=goods-receipts/{id}` - Delete receipt
+1. **Frontend**: Open `http://localhost:3000/login.html`
+2. **Backend API**: Available at `http://localhost:8000/api`
 
-### Invoices
-- `GET /backend/api.php?path=invoices` - List all invoices
-- `GET /backend/api.php?path=invoices/{id}` - Get specific invoice
-- `POST /backend/api.php?path=invoices` - Create new invoice
-- `PUT /backend/api.php?path=invoices/{id}` - Update invoice
-- `DELETE /backend/api.php?path=invoices/{id}` - Delete invoice
+### Demo Credentials
 
-## 💻 Usage Guide
-
-### Navigation
-- **Sidebar Navigation**: Click on any module to switch pages
-- **Active States**: Current page highlighted in sidebar
-- **Responsive Design**: Works on desktop, tablet, and mobile
-
-### Data Management
-- **Create Records**: Click "+" buttons to add new items
-- **Edit Records**: Click edit (pencil) icons in tables
-- **Delete Records**: Click delete (trash) icons with confirmation
-- **Real-time Updates**: Changes reflected immediately
-
-### Special Features
-- **Invoice Payment**: Mark invoices as paid with one click
-- **Status Badges**: Color-coded status indicators
-- **Priority Levels**: Visual priority indicators
-- **Date Formatting**: Automatic date formatting
-- **Currency Display**: Proper currency formatting
-
-## 🎨 Customization
-
-### Themes & Colors
-Modify CSS variables in `frontend/css/style.css`:
-```css
-:root {
-    --primary-color: #3B82F6;
-    --secondary-color: #2DD4BF;
-    --success-color: #10B981;
-    /* Customize colors here */
-}
+```
+Email: admin@procureease.com
+Password: admin123
 ```
 
-### API Extensions
-Add new endpoints in `backend/api.php`:
-```php
-case 'my-endpoint':
-    echo json_encode(myCustomFunction($pdo));
-    break;
-```
+### API Endpoints
 
-### Frontend Features
-Extend functionality in `frontend/js/app.js`:
-```javascript
-class ProcureEaseApp {
-    // Add custom methods here
-}
-```
+#### Requisitions
+- `GET /api/requisitions` - List all requisitions
+- `POST /api/requisitions` - Create new requisition
+- `GET /api/requisitions/{id}` - Get specific requisition
+- `PUT /api/requisitions/{id}` - Update requisition
+- `DELETE /api/requisitions/{id}` - Delete requisition
+
+#### Vendors
+- `GET /api/vendors` - List all vendors
+- `POST /api/vendors` - Create new vendor
+- `GET /api/vendors/{id}` - Get specific vendor
+- `PUT /api/vendors/{id}` - Update vendor
+- `DELETE /api/vendors/{id}` - Delete vendor
+
+#### Purchase Orders
+- `GET /api/purchase-orders` - List all purchase orders
+- `POST /api/purchase-orders` - Create new purchase order
+- `GET /api/purchase-orders/{id}` - Get specific purchase order
+- `PUT /api/purchase-orders/{id}` - Update purchase order
+- `DELETE /api/purchase-orders/{id}` - Delete purchase order
+
+#### Goods Receipts
+- `GET /api/goods-receipts` - List all goods receipts
+- `POST /api/goods-receipts` - Create new goods receipt
+- `GET /api/goods-receipts/{id}` - Get specific goods receipt
+- `PUT /api/goods-receipts/{id}` - Update goods receipt
+- `DELETE /api/goods-receipts/{id}` - Delete goods receipt
+
+#### Invoices
+- `GET /api/invoices` - List all invoices
+- `POST /api/invoices` - Create new invoice
+- `GET /api/invoices/{id}` - Get specific invoice
+- `PUT /api/invoices/{id}` - Update invoice
+- `DELETE /api/invoices/{id}` - Delete invoice
+
+#### Dashboard Stats
+- `GET /api/dashboard/stats` - Get dashboard statistics
 
 ## 📊 Database Schema
 
-### Tables
-- **users** - User accounts and authentication
-- **vendors** - Supplier information and ratings
-- **requisitions** - Purchase requests and approvals
-- **purchase_orders** - Orders with vendor assignments
-- **goods_receipts** - Delivery confirmations
-- **invoices** - Financial records and payments
+### Requisitions
+- `id` (Primary Key)
+- `item` (String)
+- `quantity` (Integer)
+- `status` (Enum: Approved, Pending, Rejected)
+- `requestedBy` (String)
+- `date` (Date)
+- `timestamps`
 
-### Relationships
-- Purchase Orders → Requisitions (many-to-one)
-- Purchase Orders → Vendors (many-to-one)
-- Goods Receipts → Purchase Orders (many-to-one)
-- Invoices → Purchase Orders (many-to-one)
+### Vendors
+- `id` (Primary Key)
+- `name` (String)
+- `contact` (String)
+- `email` (String, Unique)
+- `phone` (String)
+- `timestamps`
+
+### Purchase Orders
+- `id` (Primary Key)
+- `requisition_id` (Foreign Key)
+- `vendor_id` (Foreign Key)
+- `total_amount` (Decimal)
+- `status` (Enum: Issued, Pending Approval, Completed, Cancelled)
+- `order_date` (Date)
+- `timestamps`
+
+### Goods Receipts
+- `id` (Primary Key)
+- `purchase_order_id` (Foreign Key)
+- `received_date` (Date)
+- `quantity_received` (Integer)
+- `item` (String)
+- `timestamps`
+
+### Invoices
+- `id` (Primary Key)
+- `purchase_order_id` (Foreign Key)
+- `invoice_number` (String, Unique)
+- `amount` (Decimal)
+- `status` (Enum: Paid, Pending)
+- `invoice_date` (Date)
+- `timestamps`
+
+## 🎨 UI/UX Features
+
+### Design System
+- **Primary Color**: #3B82F6 (Professional Blue)
+- **Accent Color**: #2DD4BF (Teal)
+- **Typography**: Inter font family
+- **Components**: Bootstrap 5 with custom overrides
+
+### Key UI Elements
+- **Responsive Sidebar** with collapsible navigation
+- **Dashboard Stats Cards** with animated counters
+- **Data Tables** with hover effects and status badges
+- **Modal Forms** for CRUD operations
+- **Toast Notifications** for user feedback
+- **Loading States** and skeleton screens
+
+### User Experience
+- **Auto-filled Demo Credentials** for easy testing
+- **Client-side Authentication** with local storage
+- **Responsive Design** for mobile and desktop
+- **Keyboard Shortcuts** for power users
+- **Auto-refresh** dashboard every 5 minutes
+
+## 🔧 Technical Features
+
+### Backend
+- **Laravel 12** with latest PHP 8.4
+- **SQLite Database** for portability
+- **Eloquent ORM** with relationships
+- **API Resource Controllers** with consistent responses
+- **Input Validation** with custom rules
+- **CORS Enabled** for frontend integration
+
+### Frontend
+- **Vanilla JavaScript ES6+** for maximum compatibility
+- **Bootstrap 5** for responsive design
+- **Modular Architecture** with reusable components
+- **API Wrapper** for consistent HTTP requests
+- **Authentication Manager** with token handling
+- **Utility Functions** for common operations
 
 ## 🔒 Security Features
 
-- **SQL Injection Protection** - Prepared statements
-- **XSS Prevention** - Output escaping
-- **Input Validation** - Client and server-side validation
-- **Error Handling** - Graceful error responses
-- **CORS Headers** - Proper cross-origin handling
+- **Input Validation** on all API endpoints
+- **SQL Injection Protection** via Eloquent ORM
+- **CSRF Protection** (when using Laravel session auth)
+- **XSS Protection** through proper data sanitization
+- **Authentication Required** for protected routes
 
-## 📈 Performance
+## 🧪 Testing
 
-- **Optimized Queries** - Efficient database operations
-- **Client-side Caching** - Reduced server requests
-- **Lazy Loading** - Pages load on demand
-- **Responsive Images** - Adaptive media loading
-- **Minified Assets** - Optimized CSS and JavaScript
+### API Testing
+```bash
+# Test requisitions endpoint
+curl -X GET http://localhost:8000/api/requisitions
 
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Database Errors**
-- Ensure PHP PDO SQLite extension is installed
-- Check file permissions for database creation
-- Verify web server has write access to backend directory
-
-**API Connection Issues**
-- Check if PHP server is running on correct port
-- Verify API endpoint URLs in JavaScript
-- Check browser console for JavaScript errors
-
-**Page Loading Issues**
-- Ensure all HTML files are in correct directories
-- Check CSS and JavaScript file paths
-- Verify server is serving static files correctly
-
-## 🚀 Deployment
-
-### Development
-1. Use PHP built-in server for development
-2. Access via `http://localhost:8000`
-3. All changes reflected immediately
-
-### Production
-1. **Upload Files**: Transfer all files to web server
-2. **Set Permissions**: Ensure write access for database
-3. **Configure Server**: Set up virtual host if needed
-4. **SSL Certificate**: Enable HTTPS for security
-5. **Backup Strategy**: Regular database backups
-
-### Environment Configuration
-For production, consider environment variables:
-```php
-$config = [
-    'db_path' => $_ENV['DB_PATH'] ?? __DIR__ . '/procure_ease.db',
-    'debug' => $_ENV['DEBUG'] ?? false
-];
+# Create a new requisition
+curl -X POST http://localhost:8000/api/requisitions \
+  -H "Content-Type: application/json" \
+  -d '{"item":"Test Item","quantity":5,"requestedBy":"John Doe","date":"2024-01-15"}'
 ```
 
-## 📄 Sample Data
+### Frontend Testing
+1. Open the application in browser
+2. Login with demo credentials
+3. Navigate through different sections
+4. Test CRUD operations
+5. Verify responsive design on mobile
 
-The application comes pre-loaded with realistic sample data:
-- **3 Vendors** with contact information and ratings
-- **5 Requisitions** with different statuses and priorities
-- **3 Purchase Orders** in various stages
-- **1 Goods Receipt** and **2 Invoices**
+## 📈 Future Enhancements
 
-## 🎯 Use Cases
+- **User Roles & Permissions** system
+- **Email Notifications** for workflow steps
+- **PDF Report Generation** for orders and invoices
+- **Advanced Search & Filtering** capabilities
+- **Audit Trail** for all operations
+- **Integration** with external accounting systems
+- **Barcode Scanning** for goods receipt
+- **Mobile App** for field operations
 
-- **Small to Medium Businesses** - Complete procurement solution
-- **Department Procurement** - Manage department-specific purchases
-- **Project-based Procurement** - Track project-related purchases
-- **Educational Institutions** - Manage institutional procurement
-- **Non-profit Organizations** - Budget-conscious procurement management
+## 🤝 Contributing
 
-## 🔧 Technical Details
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-### Frontend Architecture
-- **Multi-page Application** - Traditional page-based structure
-- **Progressive Enhancement** - Works without JavaScript
-- **Responsive Design** - Mobile-first approach
-- **Modern CSS** - Flexbox and Grid layouts
+## 📄 License
 
-### Backend Architecture
-- **RESTful API** - Standard HTTP methods
-- **Database Layer** - PDO with prepared statements
-- **Error Handling** - Comprehensive error responses
-- **Routing System** - Clean URL structure
+This project is open source and available under the [MIT License](LICENSE).
 
-## 📞 Support
+## 🆘 Support
 
 For support and questions:
-- Review the troubleshooting section
-- Check browser console for errors
-- Verify server requirements
-- Test API endpoints directly
+- Create an issue in the repository
+- Check the documentation
+- Review the API endpoints
+- Test with the demo credentials
 
 ---
 
-**ProcureEase** - Professional procurement management with multi-page architecture. Simple setup, powerful features, enterprise-ready functionality.
+**Built with ❤️ using Laravel & Bootstrap 5**
